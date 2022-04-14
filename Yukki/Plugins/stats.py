@@ -23,10 +23,8 @@ from ..YukkiUtilities.helpers.filters import command
 @app.on_message(command("stats") & filters.user(SUDOERS))
 async def get_statistic(_, message):
     m = await message.reply_text("🔄 **Getting bot stats...**")
-    served_chats = []
     chats = await get_served_chats()
-    for chat in chats:
-        served_chats.append(int(chat["chat_id"]))
+    served_chats = [int(chat["chat_id"]) for chat in chats]
     blocked = await get_gbans_count()
     sudoers = await get_sudoers()
     j = 0
@@ -35,11 +33,11 @@ async def get_statistic(_, message):
             user = await app.get_users(user_id)
             j += 1
         except Exception:
-            continue                     
+            continue
     modules_count ="20"
     sc = platform.system()
     arch = platform.machine()
-    ram = str(round(psutil.virtual_memory().total / (1024.0 **3)))+" GB"
+    ram = f"{str(round(psutil.virtual_memory().total / (1024.0 **3)))} GB"
     bot_uptime = int(time.time() - YUKKI_START_TIME)
     uptime = f"{get_readable_time((bot_uptime))}"
     hdd = psutil.disk_usage('/')

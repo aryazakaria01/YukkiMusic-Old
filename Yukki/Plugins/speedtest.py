@@ -12,11 +12,8 @@ from pyrogram.types import Message
 @app.on_message(filters.command("speedtest") & ~filters.edited)
 async def run_speedtest(_, message):
     userid = message.from_user.id
-    if await is_on_off(2):
-        if userid in SUDOERS:
-            pass
-        else:
-            return
+    if await is_on_off(2) and userid not in SUDOERS:
+        return
     m = await message.reply_text("⚡️ running server speedtest")
     try:
         test = speedtest.Speedtest()
@@ -29,7 +26,7 @@ async def run_speedtest(_, message):
         result = test.results.dict()
     except Exception as e:
         await m.edit_text(e)
-        return 
+        return
     m = await m.edit_text("🔄 sharing speedtest results")
     path = wget.download(result["share"])
     try:

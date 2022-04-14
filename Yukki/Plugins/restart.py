@@ -26,8 +26,7 @@ async def restart_server(_, message):
     served_chats = []
     try:
         chats = await get_active_chats()
-        for chat in chats:
-            served_chats.append(int(chat["chat_id"]))
+        served_chats.extend(int(chat["chat_id"]) for chat in chats)
     except Exception as e:
         pass
     for x in served_chats:
@@ -35,7 +34,7 @@ async def restart_server(_, message):
             await remove_active_chat(x)
         except Exception:
             pass
-    x = await message.reply_text(f"• Restarting bot server...")
+    x = await message.reply_text("• Restarting bot server...")
     os.system(f"kill -9 {os.getpid()} && python3 -m Yukki")
 
 
@@ -54,8 +53,7 @@ async def activevc(_, message: Message):
     served_chats = []
     try:
         chats = await get_active_chats()
-        for chat in chats:
-            served_chats.append(int(chat["chat_id"]))
+        served_chats.extend(int(chat["chat_id"]) for chat in chats)
     except Exception as e:
         await message.reply_text(f"error: `{e}`")
     text = ""

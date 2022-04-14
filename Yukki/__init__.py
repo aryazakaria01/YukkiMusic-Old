@@ -41,7 +41,7 @@ async def load_sudoers():
     print("[ INFO ] LOADING SUDO USERS")
     sudoersdb = db.sudoers
     sudoers = await sudoersdb.find_one({"sudo": "sudo"})
-    sudoers = [] if not sudoers else sudoers["sudoers"]
+    sudoers = sudoers["sudoers"] if sudoers else []
     for user_id in SUDOERS:
         if user_id not in sudoers:
             sudoers.append(user_id)
@@ -83,7 +83,7 @@ def all_info(app, chacha):
     BOT_ID = getme.id
     ASSID = getme1.id
     if getme.last_name:
-        BOT_NAME = getme.first_name + " " + getme.last_name
+        BOT_NAME = f"{getme.first_name} {getme.last_name}"
     else:
         BOT_NAME = getme.first_name
     BOT_USERNAME = getme.username

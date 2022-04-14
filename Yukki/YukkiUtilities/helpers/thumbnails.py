@@ -47,9 +47,8 @@ async def gen_thumb(thumbnail, title, userid, theme, ctitle):
     draw.text((30, 615), f"{title[:20]}...", fill= "black", font=font2)
     img.save(f"search/final{userid}.png")
     os.remove(f"search/temp{userid}.png")
-    os.remove(f"search/thumb{userid}.jpg") 
-    final = f"search/final{userid}.png"
-    return final
+    os.remove(f"search/thumb{userid}.jpg")
+    return f"search/final{userid}.png"
 
 
 async def down_thumb(thumbnail, userid):
@@ -59,5 +58,4 @@ async def down_thumb(thumbnail, userid):
                 f = await aiofiles.open(f"search/thumb{userid}.jpg", mode="wb")
                 await f.write(await resp.read())
                 await f.close()
-    final = f"search/thumb{userid}.jpg"
-    return final
+    return f"search/thumb{userid}.jpg"

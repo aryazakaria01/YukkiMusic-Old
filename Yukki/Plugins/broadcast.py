@@ -10,18 +10,15 @@ from Yukki.YukkiUtilities.database.chats import get_served_chats
 
 @app.on_message(command(["broadcast_pin"]) & filters.user(OWNER))
 async def broadcast_message_pin(_, message):
-    if not message.reply_to_message:
-        pass
-    else:
+    if message.reply_to_message:
         msg = await message.reply_text("🔄 Broadcasting message...")
-        x = message.reply_to_message.message_id   
+        x = message.reply_to_message.message_id
         y = message.chat.id
         sent = 0
         pins = 0
         chats = []
         schats = await get_served_chats()
-        for chat in schats:
-            chats.append(int(chat["chat_id"]))
+        chats.extend(int(chat["chat_id"]) for chat in schats)
         for i in chats:
             try:
                 m = await app.forward_messages(i, y, x)
@@ -34,7 +31,7 @@ async def broadcast_message_pin(_, message):
                 sent += 1
             except Exception:
                 pass
-        await msg.edit_text(f"✅ Broadcasted message in {sent} chats\n📌 Sent with {pins} chat pins.")  
+        await msg.edit_text(f"✅ Broadcasted message in {sent} chats\n📌 Sent with {pins} chat pins.")
         return
     if len(message.command) < 2:
         await message.reply_text("**usage**:\n\n/broadcast_pin (message)")
@@ -45,8 +42,7 @@ async def broadcast_message_pin(_, message):
     pins = 0
     chats = []
     schats = await get_served_chats()
-    for chat in schats:
-        chats.append(int(chat["chat_id"]))
+    chats.extend(int(chat["chat_id"]) for chat in schats)
     for i in chats:
         try:
             m = await app.send_message(i, text=text)
@@ -64,17 +60,14 @@ async def broadcast_message_pin(_, message):
 
 @app.on_message(command(["broadcast"]) & filters.user(OWNER))
 async def broadcast_message_nopin(_, message):
-    if not message.reply_to_message:
-        pass
-    else:
+    if message.reply_to_message:
         msg = await message.reply_text("🔄 Broadcasting message...")
         x = message.reply_to_message.message_id
         y = message.chat.id
         sent = 0
         chats = []
         schats = await get_served_chats()
-        for chat in schats:
-            chats.append(int(chat["chat_id"]))
+        chats.extend(int(chat["chat_id"]) for chat in schats)
         for i in chats:
             try:
                 m = await app.forward_messages(i, y, x)
@@ -94,8 +87,7 @@ async def broadcast_message_nopin(_, message):
     sent = 0
     chats = []
     schats = await get_served_chats()
-    for chat in schats:
-        chats.append(int(chat["chat_id"]))
+    chats.extend(int(chat["chat_id"]) for chat in schats)
     for i in chats:
         try:
             m = await app.send_message(i, text=text)

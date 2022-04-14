@@ -92,7 +92,7 @@ async def play(_, message: Message):
     if len(message.command) == 1:
         user_id = message.from_user.id
         user_name = message.from_user.first_name
-        rpk = "["+user_name+"](tg://user?id="+str(user_id)+")" 
+        rpk = f"[{user_name}](tg://user?id={str(user_id)})"
         await app.send_message(message.chat.id,
             text=f"Hi {rpk} 👋🏻\n\nℹ️ [Veez Mega](https://t.me/VeezMegaBot) **Can** play music on your **Groups** through the **Telegram Group video chat** feature !\n\n💭 **Check out** all the **Bot commands** and how they work by clicking on the » 📚 **Commands** button !",
             parse_mode="markdown",
@@ -101,7 +101,7 @@ async def play(_, message: Message):
             disable_web_page_preview=True
         )
     elif len(message.command) == 2:
-        chat_id = message.chat.id                                                       
+        chat_id = message.chat.id
         query = message.text.split(None, 1)[1]
         f1 = (query[0])
         f2 = (query[1])
@@ -143,11 +143,11 @@ async def play(_, message: Message):
             sudoers = await get_sudoers()
             text = "🧙🏻‍♂️ **List of sudo users:**\n\n"
             for count, user_id in enumerate(sudoers, 1):
-                try:                     
+                try:     
                     user = await app.get_users(user_id)
-                    user = user.first_name if not user.mention else user.mention
+                    user = user.mention or user.first_name
                 except Exception:
-                    continue                     
+                    continue
                 text += f"➤ {user}\n"
             if not text:
                 await message.reply_text("❌ no sudo users found")  

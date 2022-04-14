@@ -15,12 +15,11 @@ async def bot_sys_stats():
     cpu = psutil.cpu_percent(interval=0.5)
     mem = psutil.virtual_memory().percent
     disk = psutil.disk_usage("/").percent
-    stats = f'''
+    return f'''
 » Uptime: {get_readable_time((bot_uptime))}
 » CPU: {cpu}%
 » RAM: {mem}%
 » DISK: {disk}%'''
-    return stats
 
 
 @app.on_message(filters.command(["ping", "server"]) & ~filters.edited)
